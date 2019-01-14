@@ -1,0 +1,9 @@
+
+State Machine - |main|agent:myagent|cur
+Name cur.finish cur.moves cur.clplayer cur.length cur.width cur.start 
+cur.start 0 0 0 0 0 0 
+cur.width 0 0 0 0 1 1 
+cur.length 0 0 0 1 0 1 
+cur.clplayer 0 0 1 0 0 1 
+cur.moves 0 1 0 0 0 1 
+cur.finish 1 0 0 0 0 1 

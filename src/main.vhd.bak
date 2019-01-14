@@ -1,0 +1,61 @@
+library ieee;
+use ieee.std_logic_1164.all;
+
+entity main is port (
+	rxd : in std_logic := '1';
+	txd : out std_logic := '1';
+	clk : in std_logic
+);
+end entity;
+
+architecture RTL of main is
+
+component agent is
+    Port ( 
+           message : in std_logic_vector(7 downto 0);
+           new_message_in: in std_logic;
+           new_message_out: out std_logic;
+           edge : out std_logic_vector(7 downto 0);
+           clk : in std_logic;
+           rst : in std_logic
+           );
+end component;
+
+component async_transmitter is port (
+	clk : in std_logic;
+	TxD_start : in std_logic;
+	TxD_data : in std_logic_vector(7 downto 0);
+	TxD : out std_logic;
+	TxD_busy : out std_logic
+);
+end component;
+
+COMPONENT async_receiver is port (
+	clk : in std_logic;
+	RxD :IN std_logic;
+	RxD_data_ready :OUT std_logic := '0';
+	RxD_data :OUT std_logic_vector(7 downto 0);
+
+	RxD_idle :OUT std_logic ;  --// asserted when no data has been received for a while
+	RxD_endofpacket :OUT std_logic :='0' --// asserted for one clock cycle when a packet has been detected (i.e. RxD_idle is going high)
+);
+end component;
+
+
+-- sender ports
+signal datain,dataout : std_logic_vector (7 downto 0) := "00000000";
+signal received,rst,transmit : std_logic := '0';
+signal snd_busy,IDLE ,ENDOFP : std_logic;
+
+
+	
+ 
+ 
+begin
+
+snd: async_transmitter port map (clk, transmit, dataout, txd, snd_busy);
+myagent : agent port map(datain , received ,transmit ,dataout ,clk ,rst);
+
+m1 : async_receiver  port map(clk ,  rxd,received ,datain,idle ,endofp);
+
+end RTL;
