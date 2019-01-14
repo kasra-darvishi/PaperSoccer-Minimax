@@ -1,0 +1,7 @@
+->begin init
+w
+l
+cb
+{}
+->end init
+{0}
